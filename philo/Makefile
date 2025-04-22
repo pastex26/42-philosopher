@@ -1,6 +1,12 @@
 SRCS_FILES =	main \
 				check_args \
-				utils
+				init_data \
+				philo_action \
+				philo_loop \
+				monitoring \
+				philo_utils \
+				utils \
+				free_data
 
 #DIR---------------------
 OBJ_DIR :=		.objs

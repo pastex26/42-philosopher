@@ -6,7 +6,7 @@
 /*   By: lmarcucc <lucas@student.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 11:00:44 by lmarcucc          #+#    #+#             */
-/*   Updated: 2025/04/20 11:46:49 by lmarcucc         ###   ########.fr       */
+/*   Updated: 2025/04/22 09:19:18 by lmarcucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int	check_args(int argc, const char **argv)
 			return (0);
 		if (ft_atoll(argv[i]) > __INT_MAX__)
 			return (write(2, "value greater than INT MAX\n", 28), 0);
+		if (ft_atoll(argv[i]) == 0)
+			return (write(2, "values should be greater than 0\n", 33), 0);
 		i++;
 	}
 	if (ft_atoll(argv[0]) > 200)
