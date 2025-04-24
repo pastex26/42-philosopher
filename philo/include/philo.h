@@ -6,7 +6,7 @@
 /*   By: lmarcucc <lucas@student.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 10:54:41 by lmarcucc          #+#    #+#             */
-/*   Updated: 2025/04/22 13:33:06 by lmarcucc         ###   ########.fr       */
+/*   Updated: 2025/04/24 12:30:41 by lmarcucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,11 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-
 # define EAT "is eating"
 # define SLEEP "is sleeping"
 # define THINK "is thinking"
 # define FORK "has taken a fork"
-
+# define DEAD "died"
 
 typedef struct s_fork
 {
@@ -56,6 +55,7 @@ typedef struct s_data
 	pthread_mutex_t	start;
 	pthread_mutex_t	write;
 	pthread_mutex_t	dead;
+	pthread_mutex_t	meal;
 }					t_data;
 
 // init
@@ -65,7 +65,7 @@ void			*philo_loop(void *arg);
 
 // monitoring
 void			monitoring(t_data *data);
-int				set_finished(t_data *data);
+int				set_finished(t_data *data, int dead);
 
 // action
 int				print_action(char *msg, t_philo *phi);

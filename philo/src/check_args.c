@@ -6,7 +6,7 @@
 /*   By: lmarcucc <lucas@student.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 11:00:44 by lmarcucc          #+#    #+#             */
-/*   Updated: 2025/04/22 09:19:18 by lmarcucc         ###   ########.fr       */
+/*   Updated: 2025/04/24 12:16:36 by lmarcucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	check_num(const char *arg)
 	i = 0;
 	if (arg[0] == '-')
 		return (write(2, "negative value not allowed\n", 28), 0);
-	while (arg[0] == '+')
+	while (arg[i] == '+')
 		i++;
 	while (arg[i])
 	{

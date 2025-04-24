@@ -6,7 +6,7 @@
 /*   By: lmarcucc <lucas@student.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 14:24:34 by lmarcucc          #+#    #+#             */
-/*   Updated: 2025/04/22 10:38:30 by lmarcucc         ###   ########.fr       */
+/*   Updated: 2025/04/24 11:00:53 by lmarcucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	destroy_mut(t_data *data, int all)
 	{
 		pthread_mutex_destroy(&data->start);
 		pthread_mutex_destroy(&data->dead);
+		pthread_mutex_destroy(&data->meal);
+		pthread_mutex_destroy(&data->write);
 	}
 }
 

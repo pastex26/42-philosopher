@@ -6,7 +6,7 @@
 /*   By: lmarcucc <lucas@student.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 11:07:57 by lmarcucc          #+#    #+#             */
-/*   Updated: 2025/04/22 12:43:46 by lmarcucc         ###   ########.fr       */
+/*   Updated: 2025/04/24 09:03:23 by lmarcucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	my_sleep(int time, t_data *data)
 	{
 		if (is_finished(data))
 			return (0);
-		usleep(200);
+		usleep(500);
 	}
 	return (1);
 }

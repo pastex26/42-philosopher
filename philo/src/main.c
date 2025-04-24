@@ -6,13 +6,13 @@
 /*   By: lmarcucc <lucas@student.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 10:58:17 by lmarcucc          #+#    #+#             */
-/*   Updated: 2025/04/22 13:28:26 by lmarcucc         ###   ########.fr       */
+/*   Updated: 2025/04/24 11:21:44 by lmarcucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int main(int argc, char const *argv[])
+int	main(int argc, char const *argv[])
 {
 	t_data	data;
 

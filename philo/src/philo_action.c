@@ -6,7 +6,7 @@
 /*   By: lmarcucc <lucas@student.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:16:13 by lmarcucc          #+#    #+#             */
-/*   Updated: 2025/04/22 15:09:51 by lmarcucc         ###   ########.fr       */
+/*   Updated: 2025/04/24 11:24:59 by lmarcucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ int	print_action(char *msg, t_philo *phi)
 int	philo_eat(t_philo *phi)
 {
 	if (!print_action(EAT, phi))
-		return (let_fork(phi), 0);
-	if (pthread_mutex_lock(&phi->data->dead) == -1)
-		return (let_fork(phi), 0);
+		return (0);
+	if (pthread_mutex_lock(&phi->data->meal) == -1)
+		return (perror("pthread_mutex_lock"), 0);
 	phi->meal++;
 	phi->last_m = get_time();
-	pthread_mutex_unlock(&phi->data->dead);
+	pthread_mutex_unlock(&phi->data->meal);
 	if (!my_sleep(phi->data->time_e, phi->data))
 		return (let_fork(phi), 0);
 	return (1);
