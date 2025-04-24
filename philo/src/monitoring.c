@@ -6,7 +6,7 @@
 /*   By: lmarcucc <lucas@student.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:57:06 by lmarcucc          #+#    #+#             */
-/*   Updated: 2025/04/24 12:37:51 by lmarcucc         ###   ########.fr       */
+/*   Updated: 2025/04/24 12:58:55 by lmarcucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	monitoring(t_data *data)
 	pthread_mutex_unlock(&data->start);
 	while (1)
 	{
-		usleep(5000);
+		usleep(500);
 		check = check_finished(data);
 		if (check != -1)
 		{
