@@ -6,24 +6,18 @@
 /*   By: lmarcucc <lucas@student.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 11:07:57 by lmarcucc          #+#    #+#             */
-/*   Updated: 2025/04/24 09:03:23 by lmarcucc         ###   ########.fr       */
+/*   Updated: 2025/04/27 18:26:41 by lmarcucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <sys/time.h>
 
-int	is_finished(t_data *data)
+int	lock_mutex(pthread_mutex_t *mut)
 {
-	if (pthread_mutex_lock(&data->dead) == -1)
-		return (perror("pthread_mutex_lock"), 1);
-	if (data->stop == 1)
-	{
-		pthread_mutex_unlock(&data->dead);
-		return (1);
-	}
-	pthread_mutex_unlock(&data->dead);
-	return (0);
+	if (pthread_mutex_lock(mut) == -1)
+		return (perror("pthread_mutex_lock"), 0);
+	return (1);
 }
 
 long int	get_time(void)
@@ -41,14 +35,14 @@ long int	get_time_sim(t_data *data)
 
 int	my_sleep(int time, t_data *data)
 {
-	long int	actual_time;
+	long int	start;
 
-	actual_time = get_time();
-	while (get_time() < actual_time + time)
+	start = get_time();
+	while ((get_time() - start) < time)
 	{
-		if (is_finished(data))
+		if (check_dead(data))
 			return (0);
-		usleep(500);
+		usleep(100);
 	}
 	return (1);
 }

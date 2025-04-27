@@ -6,7 +6,7 @@
 /*   By: lmarcucc <lucas@student.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 12:22:48 by lmarcucc          #+#    #+#             */
-/*   Updated: 2025/04/24 11:21:33 by lmarcucc         ###   ########.fr       */
+/*   Updated: 2025/04/27 18:17:00 by lmarcucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int	init_data(t_data *data, const char **argv)
 	data->time_e = (int)ft_atoll(argv[3]);
 	data->time_s = (int)ft_atoll(argv[4]);
 	data->meal_nb = -1;
+	data->stop = 0;
 	if (argv[5])
 		data->meal_nb = (int)ft_atoll(argv[5]);
 	data->phi = malloc(data->phi_nb * sizeof(t_philo));

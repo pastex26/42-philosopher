@@ -6,7 +6,7 @@
 /*   By: lmarcucc <lucas@student.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 10:58:17 by lmarcucc          #+#    #+#             */
-/*   Updated: 2025/04/24 11:21:44 by lmarcucc         ###   ########.fr       */
+/*   Updated: 2025/04/27 18:38:15 by lmarcucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ int	main(int argc, char const *argv[])
 		return (1);
 	if (!init_data(&data, argv))
 		return (1);
-	if (!launch_threads(&data))
-		return (free_all(&data), 1);
+	printf("mealnb %d\n", data.meal_nb);
 	monitoring(&data);
 	free_all(&data);
 	return (0);

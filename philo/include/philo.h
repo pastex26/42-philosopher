@@ -6,7 +6,7 @@
 /*   By: lmarcucc <lucas@student.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 10:54:41 by lmarcucc          #+#    #+#             */
-/*   Updated: 2025/04/24 12:30:41 by lmarcucc         ###   ########.fr       */
+/*   Updated: 2025/04/27 18:21:35 by lmarcucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,28 +60,24 @@ typedef struct s_data
 
 // init
 int				init_data(t_data *data, const char **argv);
-int				launch_threads(t_data *data);
-void			*philo_loop(void *arg);
 
 // monitoring
 void			monitoring(t_data *data);
-int				set_finished(t_data *data, int dead);
 
-// action
-int				print_action(char *msg, t_philo *phi);
+// philo
 int				philo_eat(t_philo *phi);
-int				philo_sleep(t_philo *phi);
-int				take_fork(t_philo *phi);
-int				let_fork(t_philo *phi);
+void			*philo_routine(void *arg);
 
 // security
 int				check_args(int argc, const char **argv);
 void			free_all(t_data *data);
 void			destroy_mut(t_data *data, int all);
+void			detach_threads(t_data *data);
 
 // utils
+int				check_dead(t_data *data);
+int				lock_mutex(pthread_mutex_t *mut);
 int				my_sleep(int time, t_data *data);
-int				is_finished(t_data *data);
 long int		get_time_sim(t_data *data);
 long int		get_time(void);
 long long int	ft_atoll(const char *str);

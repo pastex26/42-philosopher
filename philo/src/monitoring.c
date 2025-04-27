@@ -6,7 +6,7 @@
 /*   By: lmarcucc <lucas@student.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:57:06 by lmarcucc          #+#    #+#             */
-/*   Updated: 2025/04/24 12:58:55 by lmarcucc         ###   ########.fr       */
+/*   Updated: 2025/04/27 18:40:19 by lmarcucc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,89 +16,94 @@ int	launch_threads(t_data *data)
 {
 	int	i;
 
-	if (pthread_mutex_lock(&data->start) == -1)
-		return (perror("pthread_mutex_lock"), 0);
 	i = 0;
 	while (i < data->phi_nb)
 	{
-		pthread_create(&data->phi[i].thread, NULL, philo_loop, &data->phi[i]);
-		data->phi[i].last_m = get_time();
+		if (pthread_create(&data->phi[i].thread, NULL, philo_routine, &data->phi[i]) == -1)
+		{
+			perror("pthread_create");
+			return (0);
+		}
 		i++;
 	}
 	return (1);
 }
 
-int	set_finished(t_data *data, int dead)
+int	monitoring_dead(t_data *data, t_philo *phi)
 {
-	if (pthread_mutex_lock(&data->dead))
-	{
-		perror("pthread_mutex_lock");
-		data->stop = 1;
-		return (0);
-	}
-	data->stop = 1;
-	pthread_mutex_unlock(&data->dead);
-	if (dead)
-	{
-		if (pthread_mutex_lock(&data->write) != -1)
-		{
-			printf("%ld %d %s\n", get_time_sim(data), dead, DEAD);
-			pthread_mutex_unlock(&data->write);
-		}
-		else
-			perror("pthread_mutex_lock");
-	}
-	return (1);
-}
+	long int	time;
 
-static int	check_dead(t_philo *phi, long int actual_time)
-{
-	if (actual_time - phi->last_m >= phi->data->time_d)
+	time = get_time();
+	if (!lock_mutex(&data->meal))
 		return (1);
+	if (phi->last_m - data->start_time >= time - data->time_d)
+	{
+		if (!lock_mutex(&data->dead))
+			return (pthread_mutex_unlock(&data->meal), 1);
+		data->stop = 1;
+		pthread_mutex_unlock(&data->dead);
+		if (!lock_mutex(&data->write))
+			return (pthread_mutex_unlock(&data->meal), 1);
+		printf("%ld %d %s\n", get_time_sim(data), phi->id, DEAD);
+		pthread_mutex_unlock(&data->write);
+	}
+	pthread_mutex_unlock(&data->dead);
+	pthread_mutex_unlock(&data->meal);
 	return (0);
 }
 
-static int	check_finished(t_data *data)
+int	check_full_eat(t_data *data, t_philo *phi, int *total_meal)
 {
-	int			i;
-	int			meal_done;
-	long int	actual_time;
-
-	actual_time = get_time();
-	meal_done = 0;
-	i = 0;
-	if (pthread_mutex_lock(&data->meal) == -1)
-		return (perror("pthread_mutex_lock"), 0);
-	while (i < data->phi_nb)
+	if (!lock_mutex(&data->meal))
+		return (0);
+	if (data->meal_nb != -1 && phi->meal >= data->meal_nb)
+		*total_meal += 1;
+	if (*total_meal == data->meal_nb)
 	{
-		if (check_dead(&data->phi[i], actual_time))
-			return (pthread_mutex_unlock(&data->meal), data->phi[i].id);
-		if (data->meal_nb != -1 && data->phi[i].meal >= data->meal_nb)
-			meal_done++;
-		i++;
+		lock_mutex(&data->dead);
+		data->stop = 1;
+		pthread_mutex_unlock(&data->dead);
+		pthread_mutex_unlock(&data->meal);
+		return (0);
 	}
 	pthread_mutex_unlock(&data->meal);
-	if (meal_done == data->phi_nb)
-		return (0);
-	return (-1);
+	return (1);
+}
+
+int	check_state(t_data *data)
+{
+	int	i;
+	int	meals;
+
+	i = 0;
+	meals = 0;
+	while (i < data->phi_nb)
+	{
+		if (monitoring_dead(data, &data->phi[i]))
+			return (1);
+		if (!check_full_eat(data, &data->phi[i], &meals))
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 void	monitoring(t_data *data)
 {
 	int	i;
-	int	check;
 
+	if (!lock_mutex(&data->start))
+		return ;
+	if (!launch_threads(data))
+		return ;
 	data->start_time = get_time();
 	pthread_mutex_unlock(&data->start);
+	usleep(3000);
 	while (1)
 	{
-		usleep(500);
-		check = check_finished(data);
-		if (check != -1)
-		{
-			set_finished(data, check);
+		if (check_state(data))
 			break ;
-		}
+		usleep(500);
 	}
 	i = 0;
 	while (i < data->phi_nb)
